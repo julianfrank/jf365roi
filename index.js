@@ -27,9 +27,14 @@ app.use('/', express.static('public'));
 app.use('/js', express.static('js'));
 app.use('/css', express.static('css'));
 
-app.all('/*.html', function (req, res) {
+app.all('/*.html', function (req, res) {// Need this to load test using loader.io
     res.contentType('text/html')
     res.render(req.params[0])
+})
+
+app.all('/favicon.ico', function (req, res) {// Need this to load test using loader.io
+    res.contentType('image/x-icon')
+    res.redirect('/public/favicon.ico')
 })
 
 app.all('/', function (req, res) {
