@@ -6,7 +6,7 @@ var model = {
     "constraints": {
         "plane": { "max": 44 },
         "person": { "max": 512 },
-        "cost": { "max": 300000 }
+        "cost": { "max": 50000 }
     },
     "variables": {
         "brit": {
