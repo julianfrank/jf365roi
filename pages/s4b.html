@@ -6,14 +6,38 @@
     <script src="/js/s4b.js"></script>
 </head>
 
-<body>
+<body onload="init_document()">
     <h1>Office365 ROI Calculator - Skype for Business v0.0.1</h1>
     <br>
-    <div>
-        <label>Number of Phones</label>
-        <!-- <meter id="m_PhoneCount" value="10000" min="1" max="99999" low="1000" high="30000" optimum="10000"></meter> -->
-        <input id="r_PhoneCount" type="range" min="1" max="99999" step="1" value="1000" onchange="update_value('r_PhoneCount','i_PhoneCount')">
-        <input id="i_PhoneCount" type="number" min="1" max="99999" maxlength="5" onchange="update_value('i_PhoneCount','r_PhoneCount')">
+    <div id="Present">
+        <div id="PhoneCount">
+            <label>Number of Phones</label>
+            <input id="ir_PhoneCount" type="range" min="1" max="99999" step="1" onchange="update_value('ir_PhoneCount','in_PhoneCount','PhoneCount')">
+            <input id="in_PhoneCount" type="number" min="1" max="99999" maxlength="5" onchange="update_value('in_PhoneCount','ir_PhoneCount','PhoneCount')">
+        </div>
+        <div id="AvgCallsPM">
+            <label>Average Calls Per Month Per Person</label>
+            <input id="ir_AvgCallsPM" type="range" min="1" max="9999" step="1" onchange="update_value('ir_AvgCallsPM','in_AvgCallsPM','AvgCallsPM')">
+            <input id="in_AvgCallsPM" type="number" min="1" max="9999" maxlength="4" onchange="update_value('in_AvgCallsPM','ir_AvgCallsPM','AvgCallsPM')">
+        </div>
+        <div id="InboundCallsP" onchange="revupdate_value('ir_InboundCallsP','m_OutboundCallsP','OutboundCallsP')">
+            <label>Average Inbound Calls %</label>
+            <input id="ir_InboundCallsP" type="range" min="0" max="99" step="1" onchange="update_value('ir_InboundCallsP','in_InboundCallsP','InboundCallsP')">
+            <input id="in_InboundCallsP" type="number" min="0" max="99" maxlength="2" onchange="update_value('in_InboundCallsP','ir_InboundCallsP','InboundCallsP')">
+        </div>
+        <div id="OutboundCallsP">
+            <label>Average Outbound Calls %</label>
+            <meter id="m_OutboundCallsP" min="0" max="100" low="0" high="66" optimum="44"></meter>
+        </div>
+        <div id="LocalCallsP" onchange="revupdate_value('ir_LocalCallsP','m_IntCallsP','IntCallsP')">
+            <label>Average Local Calls %</label>
+            <input id="ir_LocalCallsP" type="range" min="0" max="99" step="1" onchange="update_value('ir_LocalCallsP','in_LocalCallsP','LocalCallsP')">
+            <input id="in_LocalCallsP" type="number" min="0" max="99" maxlength="2" onchange="update_value('in_LocalCallsP','ir_LocalCallsP','LocalCallsP')">
+        </div>
+        <div id="IntCallsP">
+            <label>Average International Calls %</label>
+            <meter id="m_IntCallsP" min="0" max="100" low="0" high="66" optimum="44"></meter>
+        </div>
 
     </div>
 </body>

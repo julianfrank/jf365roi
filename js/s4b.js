@@ -1,9 +1,39 @@
 "use strict"
 
-console.log("s4b Loaded")
+var inputs = {}//json table to hold input values
 
-function update_value(source, target) {
+function init_document() {
+    console.log("s4b Loaded")
+    
+    //Initialising
+    inputs = {
+        "PhoneCount":"",
+        "AvgCallsPM":"",
+        "InboundCallsP":"",
+        "OutboundCallsP":"",
+        "LocalCallsP":"",
+        "IntCallsP":""
+    }
+    update_value('ir_PhoneCount', 'in_PhoneCount', 'PhoneCount')
+    update_value('ir_AvgCallsPM', 'in_AvgCallsPM', 'AvgCallsPM')
+    update_value('ir_InboundCallsP', 'in_InboundCallsP', 'AvgInboundCallsP')
+    update_value('ir_OutboundCallsP', 'in_OutboundCallsP', 'OutboundCallsP')
+    update_value('ir_LocalCallsP', 'in_LocalCallsP', 'LocalCallsP')
+    update_value('ir_IntCallsP', 'in_IntCallsP', 'IntCallsP')
+}
+
+
+function update_value(source, target, parameter) {
     var s = document.getElementById(source)
     var t = document.getElementById(target)
-    t.value = s.value
+    inputs[parameter] = s.value
+    t.value = inputs[parameter]
+    console.log(inputs)
+}
+function revupdate_value(source,target,parameter){
+    var s = document.getElementById(source)
+    var t = document.getElementById(target)
+    inputs[parameter] = 100 - s.value
+    t.value = inputs[parameter]
+    console.log(inputs)    
 }
