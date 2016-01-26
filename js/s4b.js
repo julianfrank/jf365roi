@@ -16,10 +16,10 @@ function init_document() {
     }
     update_value('ir_PhoneCount', 'in_PhoneCount', 'PhoneCount')
     update_value('ir_AvgCallsPM', 'in_AvgCallsPM', 'AvgCallsPM')
-    update_value('ir_InboundCallsP', 'in_InboundCallsP', 'AvgInboundCallsP')
-    update_value('ir_OutboundCallsP', 'in_OutboundCallsP', 'OutboundCallsP')
+    update_value('ir_InboundCallsP', 'in_InboundCallsP', 'InboundCallsP')
+    revupdate_value('ir_InboundCallsP', 'm_OutboundCallsP', 'OutboundCallsP')
     update_value('ir_LocalCallsP', 'in_LocalCallsP', 'LocalCallsP')
-    update_value('ir_IntCallsP', 'in_IntCallsP', 'IntCallsP')
+    revupdate_value('ir_LocalCallsP', 'm_IntCallsP', 'IntCallsP')
 }
 
 
