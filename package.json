@@ -24,9 +24,7 @@
   "homepage": "https://github.com/julianfrank/jfheroo365roi#readme",
   "dependencies": {
     "body-parser": "^1.14.2",
-    "cookie-parser": "^1.4.1",
-    "express": "^4.13.3",
-    "express-session": "^1.13.0",
+    "express": "^4.13.4",
     "javascript-lp-solver": "^0.4.1"
   }
 }

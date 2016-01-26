@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Office365 ROI Calculator - Skype for Business</title>
+    <link rel="shortcut icon" type="image/x-ico" href="/public/favicon.ico" />
+    <script src="/js/s4b.js"></script>
+</head>
+
+<body>
+    <h1>Office365 ROI Calculator - Skype for Business v0.0.1</h1>
+    <br>
+    <div>
+        <label>Number of Phones</label>
+        <!-- <meter id="m_PhoneCount" value="10000" min="1" max="99999" low="1000" high="30000" optimum="10000"></meter> -->
+        <input id="r_PhoneCount" type="range" min="1" max="99999" step="1" value="1000" onchange="update_value('r_PhoneCount','i_PhoneCount')">
+        <input id="i_PhoneCount" type="number" min="1" max="99999" maxlength="5" onchange="update_value('i_PhoneCount','r_PhoneCount')">
+
+    </div>
+</body>

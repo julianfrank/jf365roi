@@ -39,7 +39,7 @@ app.all('/favicon.ico', function (req, res) {// Need this to load test using loa
 
 app.all('/', function (req, res) {
     res.contentType('text/html')
-    res.render('try1')
+    res.render('s4b')
 })
 
 app.listen(port, function () {
