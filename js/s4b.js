@@ -90,8 +90,10 @@ function revupdate_value(source, target, parameter) {
 
 /* Common Function to Modified to copy value from two sources and compute the target but using the formula (max-value)
     @source     'id' of the 'Source' Element
-    @target     'id' of the 'Target' Element
-    @parameter  input parameter related to the target which needs to be updated with the final source's value
+    @target1    'id' of the 'Target1' Element
+    @parameter1 input parameter related to the target which needs to be updated
+    @target2    'id' of the 'Target2' Element
+    @parameter2 input parameter related to the target which needs to be updated
     */
 function modrevupdate_value(source, target1, parameter1, target2, parameter2) {
     var s = document.getElementById(source)
