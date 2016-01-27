@@ -10,7 +10,7 @@ var bodyParser = require('body-parser') //Required to read the body
 var helpers = require('./mylibs/helpers')
 
 //Initialization
-var port = process.env.PORT || 8080
+var port = process.env.PORT || 80
 var log = helpers.log
  
 //Express Application Initialization
@@ -37,7 +37,7 @@ app.all('/favicon.ico', function (req, res) {// Need this to load test using loa
     res.redirect('/public/favicon.ico')
 })
 
-app.all('/', function (req, res) {
+app.all('/', function (req, res) {// Right now will use this to test the s4b.html
     res.contentType('text/html')
     res.render('s4b')
 })
