@@ -43,7 +43,7 @@ app.all('/', function (req, res) {// Right now will use this to test the s4b.htm
 })
 
 app.listen(port, function () {
-    console.log(helpers.readPackageJSON(__dirname,"name") + " " +
+    log(helpers.readPackageJSON(__dirname,"name") + " " +
         helpers.readPackageJSON(__dirname,"version") +
-        "\tStarted & Listening on port\t: ", port)
+        "\tStarted & Listening on port\t: "+ port)
 });
