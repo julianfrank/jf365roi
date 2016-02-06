@@ -1,0 +1,157 @@
+'use strict'
+
+if (typeof log === 'undefined') {
+    var log = function (consoleText) {
+        console.log('FlUI[' + Date() + ']\t' + consoleText)
+    }
+    log("Using FlUI's log Engine")
+}
+
+function FlUI() {
+    //Initialize Key Maps
+    FlUI._dataModel = JSON.parse('{}')
+    FlUI._copyMap = JSON.parse('{}')
+    FlUI._sumMap = JSON.parse('{}')
+    
+    //Initialize Indexes to enable quick search of elements to be updated
+    FlUI._copyIndex = JSON.parse('{}')
+    FlUI._sumIndex = JSON.parse('{}')
+
+    //This will update changes to dataModel
+    FlUI.updateDataModel = function (dataItem, param, value) {
+        log(dataItem + ' -> ' + param + ' -> ' + value)
+        log(FlUI._copyIndex)
+        FlUI._dataModel[dataItem][param] = value
+        FlUI.updateUI(dataItem)
+    }
+    
+    //This will update changes in dataModel to all related Elements
+    FlUI.updateUI = function (dataItem) {
+        var uiIDArray = FlUI._copyMap[dataItem]
+        //Iterate through each Element associated with the Key Data Variable
+        uiIDArray.forEach(function (uiID) {//uiID PArse Loop
+            var targetUI = document.getElementById(uiID)
+            // Initialize the Element (Dynamic version)
+            for (var param in FlUI._dataModel[dataItem]) {
+                if (FlUI._dataModel[dataItem].hasOwnProperty(param)) {
+                    targetUI[param] = FlUI._dataModel[dataItem][param]
+                }
+            }//DataModel Parameter Parse loop ends here
+            
+            //Add Listener Event to Object
+            //[Todo] Got to ad logic to add event only if event is not already registered
+            targetUI.addEventListener('input', FlUI.UIChange)
+        })//UiID Parse Loop ends here
+    }
+        
+    
+    //Any UI Change will land here
+    FlUI.UIChange = function (event) {
+        var changedElementId = event.currentTarget.id
+        var newValue = document.getElementById(changedElementId).value
+        
+        //Validate Value Change for min/max
+        var dataItem = FlUI._dataModel[FlUI._copyIndex[changedElementId]['targetDataValue']]
+        log(dataItem)
+        var min = FlUI._dataModel[FlUI._copyIndex[changedElementId]['targetDataValue']].min
+        var max = FlUI._dataModel[FlUI._copyIndex[changedElementId]['targetDataValue']].max
+        if (newValue < min) { newValue = min } else if (newValue > max) { newValue = max }
+        log(newValue)
+        FlUI.updateDataModel(changedElementId, 'value', newValue)
+        //log(FlUI._dataModel[FlUI._copyIndex[changedElementId]['targetDataValue']].min)
+        //[Todo] Simplify using more Index Access and map access functions...tooo long
+        /*if (document.getElementById(changedElementId).value < FlUI._dataModel[FlUI._copyIndex[changedElementId]['targetDataValue']].min) {
+            document.getElementById(changedElementId).value = FlUI._dataModel[FlUI._copyIndex[changedElementId]['targetDataValue']].min
+        } else {
+            if (document.getElementById(changedElementId).value > FlUI._dataModel[FlUI._copyIndex[changedElementId]['targetDataValue']].max) {
+                document.getElementById(changedElementId).value = FlUI._dataModel[FlUI._copyIndex[changedElementId]['targetDataValue']].max
+            }
+        }
+        //Copy Value of currentTarget to all related elements
+        FlUI._copyIndex[changedElementId]['copies'].forEach(function (copyId) {
+            document.getElementById(copyId).value = document.getElementById(changedElementId).value
+        })
+        //log('FlUI domChange Event Detected ' + changedElementId + ' ' + FlUI._copyIndex[changedElementId])*/
+    }
+
+    //Just sayin Hello
+    log("FlUI has Loaded")
+}
+
+/*Standard get/set for the three main maps
+1. Data Model   - JSON Object with the Key Data Variable and their associated default values, min, max, step values
+2. CopyMap      - JSON Object that maps the Key Data Variables with the 'Directly' associated Elements
+3. SumMap       - JSOM Object mapping the actively linked lements and passive elements 
+*/
+FlUI.prototype.setDataModel = function (newModel) { FlUI._dataModel = newModel }
+FlUI.prototype.getDataModel = function () { return FlUI._dataModel }
+FlUI.prototype.setCopyMap = function (newMap) { FlUI._copyMap = newMap }
+FlUI.prototype.getCopyMap = function () { return FlUI._copyMap }
+FlUI.prototype.setSumMap = function (newMap) { FlUI._sumMap = newMap }
+FlUI.prototype.getSumMap = function () { return FlUI._sumMap }
+
+//Attache the Maps to their UI Elements in DOM
+FlUI.prototype.attachUI2Map = function () {
+    
+    //Attach Model to UI
+    if ((Object.keys(FlUI._copyMap).length === 0) || (typeof FlUI._copyMap != 'object')) {
+        log("Nothing to Attach.No Mapping Data in FlUI._copyMap.")
+        return
+    } else {
+        //Update UI for all Data Items in Data Model
+        Object.keys(FlUI._dataModel).forEach(function (dataItem) { FlUI.updateUI(dataItem) }, this)// Ending the dataItem Parse Loop
+            
+        //Build copyIndex
+        FlUI._copyIndex = {} //Clear the Copy Index...We want to do a fresh build here
+        Object.keys(FlUI._copyMap).forEach(function (dataItem) {// dataItem Parse Loop
+            //log(dataItem)
+            var uiIDArray = FlUI._copyMap[dataItem]
+            //Iterate through each Element associated with the Key Data Variable
+            uiIDArray.forEach(function (uiID) {//uiID PArse Loop
+
+                //Build copyIndex - Actual magic happens here
+                uiIDArray.forEach(function (otherId) {//otherId to build _copyIndex and _sumIndex
+                    if (uiID != otherId) {
+                        //Add Entry into _copyIndex
+                        if (FlUI._copyIndex[uiID] === undefined) {
+                            FlUI._copyIndex[uiID] = JSON.parse('{}')
+                            FlUI._copyIndex[uiID]['copies'] = []
+                            FlUI._copyIndex[uiID]['targetDataValue'] = dataItem.toString()
+                        }
+                        FlUI._copyIndex[uiID]['copies'].push(otherId)
+                        //log('copyIndex ' + JSON.stringify(FlUI._copyIndex[uiID]))                        
+                    }
+                }, this)//Ending the otherId to build _copyIndex/_sumIndex build Loop
+        
+            }, this)// Ending the uiID Parse Loop
+        }, this)// Ending the dataItem Parse Loop
+        log('FlUI attachUI2Map succeeded \ncopyIndex Built -> ' + JSON.stringify(FlUI._copyIndex))
+    
+        //Build the sumIndex
+        Object.keys(FlUI._sumMap).forEach(function (group) {
+            log('Processing group ->' + group)
+            FlUI._sumMap[group].active.forEach(function (elId) {
+                log('Active ids in this group -> ' + elId)
+            })
+        }, this)//Ending the Group Parse Loop
+        /*                        //Add Entry into sumIndex
+                        if (FlUI._sumIndex[uiID] === undefined) {
+                            FlUI._sumIndex[uiID] = JSON.parse('{}')
+                            FlUI._sumIndex[uiID]['activeBuddies'] = []
+                            FlUI._sumIndex[uiID]['passiveBuddies'] = []
+                        }
+ 
+        
+            //Build Active Buddy List for active buddies
+            for (var key in FlUI._sumMap[group].active) {
+                if (FlUI._sumMap[group].active.hasOwnProperty(key)) {
+                    var element = FlUI._sumMap[group].active[key];
+                    if (element === uiID) {
+                        log(uiID + ' -> ' + group)
+                    }
+                }
+            }
+        */
+
+    }//This is completed after Building both copy and sum Indexes
+}

@@ -42,6 +42,15 @@ app.all('/', function (req, res) {// Right now will use this to test the s4b.htm
     res.render('s4b')
 })
 
+app.all('/lab1', function (req, res) {// Right now will use this to test the s4b.html
+    res.contentType('text/html')
+    res.render('try1')
+})
+
+app.all('/FlUI', function (req, res) {// Right now will use this to test the s4b.html
+    res.contentType('text/html')
+    res.render('FlUI')
+})
 app.listen(port, function () {
     log(helpers.readPackageJSON(__dirname,"name") + " " +
         helpers.readPackageJSON(__dirname,"version") +
