@@ -1,5 +1,7 @@
 'use strict'
 
+var DEBUGMODE = true// turn Debugger on...When this is false log will not output anything
+
 var myApp
 
 var modelDataItem = {
@@ -37,13 +39,12 @@ var modelDataGroups = {
     }
 }
 
+//This is the main equivalent
 function init_document() {
 
-    log('working')
+    myApp = new FlUI(modelDataItem, modelDataGroups)
 
-    var myApp = new FlUI(modelDataItem, modelDataGroups)
-
-    log(myApp.getAllMDI())
-    log(myApp.getAllMDG())
+    //log.info(myApp.getAllMDI())
+    //log.info(myApp.getAllMDG())
 
 }
