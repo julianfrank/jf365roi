@@ -7,6 +7,7 @@ Last Update  - 7/Feb/2016
 
 'use strict'
 
+//Build crude log Function only if not already Defined
 if (typeof log === 'undefined') {
     var log = function (consoleText) {
         console.log('FlUI[' + Date() + ']\t' + consoleText)
@@ -64,7 +65,7 @@ function FlUI(modelDataItemValue, modelDataGroupsValue) {
             }
         }//End of DataItems Browse Loop
 
-        log.info('FlUI DataItem Index Built')
+        log('FlUI DataItem Index Built')
     }
 
     function updateAllDItoUI() {
@@ -129,10 +130,10 @@ function FlUI(modelDataItemValue, modelDataGroupsValue) {
     this.getAllMDG = function () { return modelDataGroupsStore }
 
     function buildDataGroupIndexes() {
-        log.info('FlUI DataGroup Indexes Built')
+        log('FlUI DataGroup Indexes Built')
     }
 
-    log.info('FlUI Loaded')
-    log.debug(this)
+    log('FlUI Loaded')
+    log(this)
 
 }

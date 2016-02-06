@@ -44,7 +44,7 @@ function init_document() {
 
     myApp = new FlUI(modelDataItem, modelDataGroups)
 
-    //log.info(myApp.getAllMDI())
-    //log.info(myApp.getAllMDG())
+    //log(myApp.getAllMDI())
+    //log(myApp.getAllMDG())
 
 }
