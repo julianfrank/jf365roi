@@ -139,7 +139,6 @@ function FlUI(modelDataItemValue, modelDataGroupsValue) {
     
     //Update the Group Items based on Change of one Item
     function updateGroupItem(dataItem, newValue) {
-
         if ((typeof dataItem != 'undefined') && (typeof modelDataItemIndex[dataItem] != 'undefined')) {
 
             var impactedGroup = modelDataItemIndex[dataItem]['group']
@@ -154,26 +153,39 @@ function FlUI(modelDataItemValue, modelDataGroupsValue) {
             var finalValueArray = calculateGroupTotal(allDI).valueArray
             var finalGroupTotal = calculateGroupTotal(allDI).total
 
-            if (typeof bufferDI != 'undefined') { //These are applicable only if buffer dataitemexists
+            if (typeof bufferDI != 'undefined') {
                 if (activeGroupTotal < groupMax) {
                     finalValueArray[bufferDI] = groupMax - activeGroupTotal
                 } else {
                     finalValueArray[bufferDI] = 0
                 }
-                updateDataItem(bufferDI, 'value', finalValueArray[bufferDI])
             }
 
-            var otherDIArray = activeDIArray.filter(function (value, index, array) {//Build array of other active items
-                if (value === dataItem) { return false } else { return true }
+            var otherDIArray = activeDIArray.filter(function (value, index, array) {
+                if (value === dataItem) {
+                    return false
+                } else {
+                    return true
+                }
             })
-            //log(dataItem, newValue, finalGroupTotal, otherDIArray, groupMax)            
+            
             //[ToDo] Logic not satisfactory...and not scaleable for multiple values...need to improve
-            for (var index = 0; index < otherDIArray.length; index++) {
-                var element = otherDIArray[index]
-                otherDIArray[element] = groupMax - newValue - (finalValueArray[bufferDI] || 0)
-                updateDataItem(element, 'value', otherDIArray[element])
-                if (finalGroupTotal = groupMax) break
+            if (finalGroupTotal > groupMax) {
+
+                for (var index = 0; index < otherDIArray.length; index++) {
+                    var element = otherDIArray[index]
+                    finalValueArray[element] = groupMax - newValue
+                    otherDIArray[element] = groupMax - newValue
+                    if (finalGroupTotal = groupMax) break
+                }
+
             }
+            log(finalValueArray,otherDIArray)
+            finalValueArray.forEach(function (di) {
+                log(di)
+                updateDataItem(di, 'value', finalValueArray[di])
+                log(modelDataItemStore)
+            }, this);
         }
     }
 
