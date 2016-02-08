@@ -1,8 +1,13 @@
 # Office 365 ROI Calculator
 
-This app is being published in https://jfs4broi.herokuapp.com/
+Focussing on Skype For Business Online PSTN Packages for now...Please be patient
 
-27/Jan/2016   Focusing on Skype4BPSTN Right Now
+You can checkout the latest version in the links below and I would appreciate any ideas of improvement and bug in [Github bug Reporting](https://github.com/julianfrank/jfheroo365roi/issues)
 
-~~Testing Update from VS2015 CE~~
-Back to VS Code
+| Date   	| Status   	| Links   	|
+|:-:	|:-:	|---	|
+| **07/Feb/2016**  	| FlUI library in decent shape...S4Broi app with FlUI available in the s4broi branch  	| [FlUI based App](https://jfs4broi.herokuapp.com/FlUI)  	|
+|*27/Jan/2016*   	| Focusing on Skype4BPSTN Right Now  	| [Ugly Duckling Version](https://jfs4broi.herokuapp.com)  	|
+
+      
+     

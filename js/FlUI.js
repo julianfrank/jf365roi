@@ -1,7 +1,7 @@
 /*
 FlUI - Declarative Model Driven UI Data Management Framework
 Author - Julian Frank
-Version - 0.2.0
+Version - 0.3.0
 Last Update  - 7/Feb/2016 
 */
 

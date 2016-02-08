@@ -9,7 +9,9 @@
 </head>
 
 <body onload="init_document()">
-    <h1>Office365 ROI Calculator - Skype for Business PSTN Module v0.0.3 - Trying FlUI</h1>
+    <h1>Office365 ROI Calculator</h1>
+    <h2>Skype for Business PSTN Module v0.2.0</h2>
+    <h3>Trying FlUI</h3>
     <br>
     <div id="Present">
         <h2>Present</h2>
@@ -20,20 +22,20 @@
                 <input id="ir_PhoneCount" type="range">
                 <input id="in_PhoneCount" type="number">
             </div>
-            <!--            <div id="AvgCallsPM">
+            <div id="AvgCallsPM">
                 <label>Average Calls Per Month Per Person</label>
-                <input id="ir_AvgCallsPM" type="range" min="1" max="9999" step="1" onchange="update_value('ir_AvgCallsPM','in_AvgCallsPM','AvgCallsPM')">
-                <input id="in_AvgCallsPM" type="number" min="1" max="9999" maxlength="4" onchange="update_value('in_AvgCallsPM','ir_AvgCallsPM','AvgCallsPM')">
+                <input id="ir_AvgCallsPM" type="range">
+                <input id="in_AvgCallsPM" type="number">
             </div>
-            <div id="InboundCallsP" onchange="revupdate_value('ir_InboundCallsP','m_OutboundCallsP','OutboundCallsP')">
+            <div id="InboundCallsP">
                 <label>Average Inbound Calls %</label>
-                <input id="ir_InboundCallsP" type="range" min="0" max="99" step="1" onchange="update_value('ir_InboundCallsP','in_InboundCallsP','InboundCallsP')">
-                <input id="in_InboundCallsP" type="number" min="0" max="99" maxlength="2" onchange="update_value('in_InboundCallsP','ir_InboundCallsP','InboundCallsP')">
+                <input id="ir_InboundCallsP" type="range">
+                <input id="in_InboundCallsP" type="number">
             </div>
             <div id="OutboundCallsP">
                 <label>Average Outbound Calls %</label>
-                <meter id="m_OutboundCallsP" min="0" max="100" low="0" high="66" optimum="44"></meter>
-            </div>-->
+                <meter id="m_OutboundCallsP"></meter>
+            </div>
             <div id="LocalCallsP">
                 <label>Average Local Calls %</label>
                 <input id="ir_LocalCallsP" type="range">
@@ -45,52 +47,52 @@
             </div>
         </div>
         <div id="CurrentCallCosts">
-            <!--            <h3>Current Call Costs</h3>
+            <h3>Current Call Costs</h3>
             <div id="PSTNMRC">
                 <label>PSTN Monthly Recurring Charges Total Across All Circuits (Analog/Ex/Tx/SIP) $</label>
-                <input id="ir_PSTNMRC" type="range" min="0" max="9999999" step="1" onchange="update_value('ir_PSTNMRC','in_PSTNMRC','PSTNMRC')">
-                <input id="in_PSTNMRC" type="number" min="0" max="9999999" maxlength="7" onchange="update_value('in_PSTNMRC','ir_PSTNMRC','PSTNMRC')">
+                <input id="ir_PSTNMRC" type="range">
+                <input id="in_PSTNMRC" type="number">
             </div>
             <div id="LocalInboundCPM">
                 <label>Local Inbound Cost Per Minute $</label>
-                <input id="ir_LocalInboundCPM" type="range" min="0" max="9" step="0.001" onchange="update_value('ir_LocalInboundCPM','in_LocalInboundCPM','LocalInboundCPM')">
-                <input id="in_LocalInboundCPM" type="number" min="0" max="9" maxlength="5" onchange="update_value('in_LocalInboundCPM','ir_LocalInboundCPM','LocalInboundCPM')">
+                <input id="ir_LocalInboundCPM" type="range">
+                <input id="in_LocalInboundCPM" type="number">
             </div>
             <div id="LocalInboundFMPU">
                 <label>Local Inbound Free Minutes Per User Per Month(Mins)</label>
-                <input id="ir_LocalInboundFMPU" type="range" min="0" max="9999" step="1" onchange="update_value('ir_LocalInboundFMPU','in_LocalInboundFMPU','LocalInboundFMPU')">
-                <input id="in_LocalInboundFMPU" type="number" min="0" max="9999" maxlength="4" onchange="update_value('in_LocalInboundFMPU','ir_LocalInboundFMPU','LocalInboundFMPU')">
+                <input id="ir_LocalInboundFMPU" type="range">
+                <input id="in_LocalInboundFMPU" type="number">
             </div>
             <div id="LocalOutboundCPM">
                 <label>Local Outbound Cost Per Minute $</label>
-                <input id="ir_LocalOutboundCPM" type="range" min="0" max="9" step="0.001" onchange="update_value('ir_LocalOutboundCPM','in_LocalOutboundCPM','LocalOutboundCPM')">
-                <input id="in_LocalOutboundCPM" type="number" min="0" max="9" maxlength="5" onchange="update_value('in_LocalOutboundCPM','ir_LocalOutboundCPM','LocalOutboundCPM')">
+                <input id="ir_LocalOutboundCPM" type="range">
+                <input id="in_LocalOutboundCPM" type="number">
             </div>
             <div id="LocalOutboundFMPU">
                 <label>Local Outbound Free Minutes Per User Per Month(Mins)</label>
-                <input id="ir_LocalOutboundFMPU" type="range" min="0" max="9999" step="1" onchange="update_value('ir_LocalOutboundFMPU','in_LocalOutboundFMPU','LocalOutboundFMPU')">
-                <input id="in_LocalOutboundFMPU" type="number" min="0" max="9999" maxlength="4" onchange="update_value('in_LocalOutboundFMPU','ir_LocalOutboundFMPU','LocalOutboundFMPU')">
+                <input id="ir_LocalOutboundFMPU" type="range">
+                <input id="in_LocalOutboundFMPU" type="number">
             </div>
             <div id="IntInboundCPM">
                 <label>International Inbound Cost Per Minute $</label>
-                <input id="ir_IntInboundCPM" type="range" min="0" max="9" step="0.001" onchange="update_value('ir_IntInboundCPM','in_IntInboundCPM','IntInboundCPM')">
-                <input id="in_IntInboundCPM" type="number" min="0" max="9" maxlength="5" onchange="update_value('in_IntInboundCPM','ir_IntInboundCPM','IntInboundCPM')">
+                <input id="ir_IntInboundCPM" type="range">
+                <input id="in_IntInboundCPM" type="number">
             </div>
             <div id="IntInboundFMPU">
                 <label>International Inbound Free Minutes Per User Per Month(Mins)</label>
-                <input id="ir_IntInboundFMPU" type="range" min="0" max="9999" step="1" onchange="update_value('ir_IntInboundFMPU','in_IntInboundFMPU','IntInboundFMPU')">
-                <input id="in_IntInboundFMPU" type="number" min="0" max="9999" maxlength="4" onchange="update_value('in_IntInboundFMPU','ir_IntInboundFMPU','IntInboundFMPU')">
+                <input id="ir_IntInboundFMPU" type="range">
+                <input id="in_IntInboundFMPU" type="number">
             </div>
             <div id="IntOutboundCPM">
                 <label>International Outbound Cost Per Minute $</label>
-                <input id="ir_IntOutboundCPM" type="range" min="0" max="9" step="0.001" onchange="update_value('ir_IntOutboundCPM','in_IntOutboundCPM','IntOutboundCPM')">
-                <input id="in_IntOutboundCPM" type="number" min="0" max="9" maxlength="5" onchange="update_value('in_IntOutboundCPM','ir_IntOutboundCPM','IntOutboundCPM')">
+                <input id="ir_IntOutboundCPM" type="range">
+                <input id="in_IntOutboundCPM" type="number">
             </div>
             <div id="IntOutboundFMPU">
                 <label>International Outbound Free Minutes Per User Per Month(Mins)</label>
-                <input id="ir_IntOutboundFMPU" type="range" min="0" max="9999" step="1" onchange="update_value('ir_IntOutboundFMPU','in_IntOutboundFMPU','IntOutboundFMPU')">
-                <input id="in_IntOutboundFMPU" type="number" min="0" max="9999" maxlength="4" onchange="update_value('in_IntOutboundFMPU','ir_IntOutboundFMPU','IntOutboundFMPU')">
-            </div>-->
+                <input id="ir_IntOutboundFMPU" type="range">
+                <input id="in_IntOutboundFMPU" type="number">
+            </div>
         </div>
         <div id="Skype4BInputs">
             <h3>Skype For Business Online Related Inputs</h3>
@@ -111,32 +113,32 @@
                     <meter id="m_NoCallingPackageP"></meter>
                 </div>
             </div>
-            <!--            <div id="CallingPackageDiscount">
+            <div id="CallingPackageDiscount">
                 <h4>Calling Package Discount (If Available)</h4>
-                <div id="LocalCallingPackageDiscountP" >
+                <div id="LocalCallingPackageDiscountP">
                     <label>Local Calling Package Discount %</label>
-                    <input id="ir_LocalCallingPackageDiscountP" type="range" min="0" max="99" step="1" onchange="update_value('ir_LocalCallingPackageDiscountP','in_LocalCallingPackageDiscountP','LocalCallingPackageDiscountP')">
-                    <input id="in_LocalCallingPackageDiscountP" type="number" min="0" max="99" maxlength="2" onchange="update_value('in_LocalCallingPackageDiscountP','ir_LocalCallingPackageDiscountP','LocalCallingPackageDiscountP')">
+                    <input id="ir_LocalCallingPackageDiscountP" type="range">
+                    <input id="in_LocalCallingPackageDiscountP" type="number">
                 </div>
                 <div id="IntCallingPackageDiscountP">
                     <label>International Calling Package Discount %</label>
-                    <input id="ir_IntCallingPackageDiscountP" type="range" min="0" max="99" step="1" onchange="update_value('ir_IntCallingPackageDiscountP','in_IntCallingPackageDiscountP','IntCallingPackageDiscountP')">
-                    <input id="in_IntCallingPackageDiscountP" type="number" min="0" max="99" maxlength="2" onchange="update_value('in_IntCallingPackageDiscountP','ir_IntCallingPackageDiscountP','IntCallingPackageDiscountP')">
+                    <input id="ir_IntCallingPackageDiscountP" type="range">
+                    <input id="in_IntCallingPackageDiscountP" type="number">
                 </div>
             </div>
             <div id="Other Details">
                 <h4>Other Details</h4>
-                <div id="MinutesPerUserPackage" >
+                <div id="MinutesPerUserPackage">
                     <label>Pooled Minutes Per User Package</label>
-                    <input id="ir_MinutesPerUserPackage" type="range" min="0" max="99" step="1" onchange="update_value('ir_MinutesPerUserPackage','in_MinutesPerUserPackage','MinutesPerUserPackage')">
-                    <input id="in_MinutesPerUserPackage" type="number" min="0" max="99" maxlength="2" onchange="update_value('in_MinutesPerUserPackage','ir_MinutesPerUserPackage','MinutesPerUserPackage')">
+                    <input id="ir_MinutesPerUserPackage" type="range">
+                    <input id="in_MinutesPerUserPackage" type="number">
                 </div>
                 <div id="AzureExpressRouteCPM">
                     <label>Azure Express Route Cost Per Month</label>
-                    <input id="ir_AzureExpressRouteCPM" type="range" min="0" max="99" step="1" onchange="update_value('ir_AzureExpressRouteCPM','in_AzureExpressRouteCPM','AzureExpressRouteCPM')">
-                    <input id="in_AzureExpressRouteCPM" type="number" min="0" max="99" maxlength="2" onchange="update_value('in_AzureExpressRouteCPM','ir_AzureExpressRouteCPM','AzureExpressRouteCPM')">
+                    <input id="ir_AzureExpressRouteCPM" type="range">
+                    <input id="in_AzureExpressRouteCPM" type="number">
                 </div>
-            </div>-->
+            </div>
         </div>
     </div>
 </body>
