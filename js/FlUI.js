@@ -8,13 +8,29 @@ Last Update  - 7/Feb/2016
 'use strict'
 
 //Build crude log Function only if not already Defined
-if (typeof log === 'undefined') {
+if ((typeof log === 'undefined') && (DEBUGMODE)) {
     function log(consoleText) {
         console.log('FlUI[' + Date() + ']\t' + consoleText)
     }
     log("Using FlUI's Internal Backup log Engine")
 }
 
+/* The main Function
+@constructor
+@param  {JSON}  JSON containing the modelDataItem (Initial)
+        Template for modelDataItem
+        {       'dataItem': {
+                'Property': { 'min': 'minValue', 'max': 'maxValue', 'step': 'stepValue', 'value': 'value' },
+                'ConnectedIDs': [Array of ElementIDs directly linked to dataItem]
+        }
+@param  {JSON}  JSON containing the modelGroup (Initial)
+        Template for modelDataGroups
+        {       'groupName': {//Logical and not used anywhere
+                'active': [Array of Related DataItems whose Sum needs to be max of the DataItem with max 'sumValue'],
+                'buffer': Buffer DataItem used to compensate active DataItems sum being lower than needed 'maxSumValue'
+            }
+        }
+*/
 function FlUI(modelDataItemValue, modelDataGroupsValue) {
     var modelDataItemStore = {},
         modelDataGroupsStore = {},
@@ -27,17 +43,65 @@ function FlUI(modelDataItemValue, modelDataGroupsValue) {
     setAllMDG(modelDataGroupsValue)
     updateAllDItoUI()
 
+    //All UI changes if registered Elements will land here
+    function UIChange(event) {
+        var changedElementId = event.currentTarget.id                                   //Element that Changed
+        var changedDataItem = modelElementIndex[changedElementId]['sourceDataItem']     //Related DataItem that changed 
+        var newValue = document.getElementById(changedElementId).value                  //Retreive new Value
+        updateDataItem(changedDataItem, 'value', newValue)                              // Update new Value to MDI Store and sync with UI
+        updateGroupItem(changedDataItem, newValue)
+    }
+
+    //Update DataItem function that updates all the related UI Elements when data Item is updated
+    function updateDataItem(di, property, newValue) {
+        //Get newValue Validated before update
+        newValue = validateDataItemChange(di, property, newValue)
+        //Directly Update the Property Value in the MDIStore
+        modelDataItemStore[di]['Property'][property] = newValue
+        //Update the Values to all related Elements in the DOM
+        var peerIDArray = modelDataItemStore[di]['ConnectedIDs']
+
+        //Iterate through each Element ID in peerIDArray and update the individual DOM properties
+        peerIDArray.forEach(function (peerID) {//Loop for each ID related to DI
+            var targetElement = document.getElementById(peerID)
+            var properties = modelDataItemStore[di]['Property']
+
+            for (var prop in properties) { if (properties.hasOwnProperty(prop)) { targetElement[prop] = properties[prop]; } }
+
+            targetElement.addEventListener('input', UIChange)
+
+        }, this);//peerID Loop stops here
+        
+    }
+    //Make updateDataItem accessible from outside
+    this.updateDataItem = function (di, property, newValue) {
+        updateDataItem(di, property, newValue)
+    }
+
     //Initialize Data Item Store
     function setAllMDI(modelDataItem) {
-        /* Template for modelDataItem
-        {       'dataItem': {
-                'Property': { 'min': 'minValue', 'max': 'maxValue', 'step': 'stepValue', 'value': 'value' },
-                'ConnectedIDs': [Array of ElementIDs directly linked to dataItem]
-        }*/
+
         modelDataItemStore = modelDataItem
         buildmodelElementIndexes()
     }
-    this.getAllMDI = function () { return modelDataItemStore }
+    
+    //From outside Get the Data Model as a JSON 
+    this.getDataModel = function () {
+        var dataModel = {}
+        for (var di in modelDataItemStore) {
+            if (modelDataItemStore.hasOwnProperty(di)) {
+                var diObject = modelDataItemStore[di]['Property']['value'];
+                dataModel[di] = diObject
+            }
+        }
+        return dataModel
+    }
+
+    //From outside Get the Data Model as a JSON 
+    this.getDataItemValue = function (searchDI) {
+        return modelDataItemStore[searchDI]['Property']['value'];
+
+    }
 
     //DataItem Index which maps each element with its peer (other elements that have the same DataItem)
     //[TODO] Anomalies in input model like different min/max to be detected and logged
@@ -90,114 +154,25 @@ function FlUI(modelDataItemValue, modelDataGroupsValue) {
     //Validate and correct newValue before updating the store
     function validateDataItemChange(di, property, newValue) {
         //[Todo]This needs to be updated to be robust...Currently problems in input if min is >0
-        if (newValue < modelDataItemStore[di]['Property']['min']) {
-            newValue = modelDataItemStore[di]['Property']['min']
-        } else if (newValue > modelDataItemStore[di]['Property']['max']) {
-            newValue = modelDataItemStore[di]['Property']['max']
+        if (modelDataItemStore[di]['Property']['min']) {
+            if (newValue < modelDataItemStore[di]['Property']['min']) {
+                newValue = modelDataItemStore[di]['Property']['min']
+            }
         }
+        if (modelDataItemStore[di]['Property']['max']) {
+            if (newValue > modelDataItemStore[di]['Property']['max']) {
+                newValue = modelDataItemStore[di]['Property']['max']
+            }
+        }
+
         return newValue
     }
     
-    //Update DataItem function that updates all the related UI Elements when data Item is updated
-    function updateDataItem(di, property, newValue) {
-        //Get newValue Validated before update
-        newValue = validateDataItemChange(di, property, newValue)
-        //Directly Update the Property Value in the MDIStore
-        modelDataItemStore[di]['Property'][property] = newValue
-        //Update the Values to all related Elements in the DOM
-        var peerIDArray = modelDataItemStore[di]['ConnectedIDs']
-
-        //Iterate through each Element ID in peerIDArray and update the individual DOM properties
-        peerIDArray.forEach(function (peerID) {//Loop for each ID related to DI
-            var targetElement = document.getElementById(peerID)
-            var properties = modelDataItemStore[di]['Property']
-
-            for (var prop in properties) { if (properties.hasOwnProperty(prop)) { targetElement[prop] = properties[prop]; } }
-
-            targetElement.addEventListener('input', UIChange)
-
-        }, this);//peerID Loop stops here
-        
-    }
-    //Make updateDataItem accessible from outside
-    this.updateDataItem = function (di, property, newValue) {
-        updateDataItem(di, property, newValue)
-    }
-    
-    //Group Totalling function
-    function calculateGroupTotal(groupArray) {
-        var valueArray = []
-        var total = 0
-
-        groupArray.forEach(function (di) {
-            valueArray[di] = Number.parseInt(modelDataItemStore[di]['Property']['value'])
-            total += Number.parseInt(modelDataItemStore[di]['Property']['value'])
-        });
-
-        return { 'valueArray': valueArray, 'total': total }
-    }
-    
-    //Update the Group Items based on Change of one Item
-    function updateGroupItem(dataItem, newValue) {
-
-        if ((typeof dataItem != 'undefined') && (typeof modelDataItemIndex[dataItem] != 'undefined')) {
-
-            var impactedGroup = modelDataItemIndex[dataItem]['group']
-            var groupMax = modelGroupIndex[impactedGroup]['max']
-            //var groupMin = modelGroupIndex[impactedGroup]['min']
-            var activeDIArray = modelDataGroupsStore[impactedGroup]['active']
-            var activeGroupTotal = calculateGroupTotal(activeDIArray).total
-            var bufferDI = modelDataGroupsStore[impactedGroup]['buffer']
-            var allDI = activeDIArray.slice(0)
-
-            if (typeof bufferDI != 'undefined') { allDI.push(bufferDI) }
-            var finalValueArray = calculateGroupTotal(allDI).valueArray
-            var finalGroupTotal = calculateGroupTotal(allDI).total
-
-            if (typeof bufferDI != 'undefined') { //These are applicable only if buffer dataitemexists
-                if (activeGroupTotal < groupMax) {
-                    finalValueArray[bufferDI] = groupMax - activeGroupTotal
-                } else {
-                    finalValueArray[bufferDI] = 0
-                }
-                updateDataItem(bufferDI, 'value', finalValueArray[bufferDI])
-            }
-
-            var otherDIArray = activeDIArray.filter(function (value, index, array) {//Build array of other active items
-                if (value === dataItem) { return false } else { return true }
-            })
-            //log(dataItem, newValue, finalGroupTotal, otherDIArray, groupMax)            
-            //[ToDo] Logic not satisfactory...and not scaleable for multiple values...need to improve
-            for (var index = 0; index < otherDIArray.length; index++) {
-                var element = otherDIArray[index]
-                otherDIArray[element] = groupMax - newValue - (finalValueArray[bufferDI] || 0)
-                updateDataItem(element, 'value', otherDIArray[element])
-                if (finalGroupTotal = groupMax) break
-            }
-        }
-    }
-
-    //All UI changes if registered Elements will land here
-    function UIChange(event) {
-        var changedElementId = event.currentTarget.id                                   //Element that Changed
-        var changedDataItem = modelElementIndex[changedElementId]['sourceDataItem']     //Related DataItem that changed 
-        var newValue = document.getElementById(changedElementId).value                  //Retreive new Value
-        updateDataItem(changedDataItem, 'value', newValue)                              // Update new Value to MDI Store and sync with UI
-        updateGroupItem(changedDataItem, newValue)
-    }
-
     //Initialize Data Groups Store
     function setAllMDG(modelDataGroups) {
-        /* Template for modelDataGroups
-        {       'groupName': {//Logical and not used anywhere
-                'active': [Array of Related DataItems whose Sum needs to be max of the DataItem with max 'sumValue'],
-                'buffer': Buffer DataItem used to compensate active DataItems sum being lower than needed 'maxSumValue'
-            }
-        }*/
         modelDataGroupsStore = modelDataGroups
         buildDataGroupIndexes()
     }
-    this.getAllMDG = function () { return modelDataGroupsStore }
 
     //Build Group Indexes to speed up group level 'Leveling'
     // This also includes Building the DataItem Index
@@ -255,6 +230,59 @@ function FlUI(modelDataItemValue, modelDataGroupsValue) {
         
         //log(modelGroupIndex);        log(modelDataItemIndex)
         log('FlUI DataGroup and DataItem Indexes Built')
+    }
+    
+    //Group Totalling function
+    function calculateGroupTotal(groupArray) {
+        var valueArray = []
+        var total = 0
+
+        groupArray.forEach(function (di) {
+            valueArray[di] = Number.parseInt(modelDataItemStore[di]['Property']['value'])
+            total += Number.parseInt(modelDataItemStore[di]['Property']['value'])
+        });
+
+        return { 'valueArray': valueArray, 'total': total }
+    }
+    
+    //Update the Group Items based on Change of one Item
+    function updateGroupItem(dataItem, newValue) {
+
+        if ((typeof dataItem != 'undefined') && (typeof modelDataItemIndex[dataItem] != 'undefined')) {
+
+            var impactedGroup = modelDataItemIndex[dataItem]['group']
+            var groupMax = modelGroupIndex[impactedGroup]['max']
+            //var groupMin = modelGroupIndex[impactedGroup]['min']
+            var activeDIArray = modelDataGroupsStore[impactedGroup]['active']
+            var activeGroupTotal = calculateGroupTotal(activeDIArray).total
+            var bufferDI = modelDataGroupsStore[impactedGroup]['buffer']
+            var allDI = activeDIArray.slice(0)
+
+            if (typeof bufferDI != 'undefined') { allDI.push(bufferDI) }
+            var finalValueArray = calculateGroupTotal(allDI).valueArray
+            var finalGroupTotal = calculateGroupTotal(allDI).total
+
+            if (typeof bufferDI != 'undefined') { //These are applicable only if buffer dataitemexists
+                if (activeGroupTotal < groupMax) {
+                    finalValueArray[bufferDI] = groupMax - activeGroupTotal
+                } else {
+                    finalValueArray[bufferDI] = 0
+                }
+                updateDataItem(bufferDI, 'value', finalValueArray[bufferDI])
+            }
+
+            var otherDIArray = activeDIArray.filter(function (value, index, array) {//Build array of other active items
+                if (value === dataItem) { return false } else { return true }
+            })
+            //log(dataItem, newValue, finalGroupTotal, otherDIArray, groupMax)            
+            //[ToDo] Logic not satisfactory...and not scaleable for multiple values...need to improve
+            for (var index = 0; index < otherDIArray.length; index++) {
+                var element = otherDIArray[index]
+                otherDIArray[element] = groupMax - newValue - (finalValueArray[bufferDI] || 0)
+                updateDataItem(element, 'value', otherDIArray[element])
+                if (finalGroupTotal = groupMax) break
+            }
+        }
     }
 
     log('FlUI Loaded')

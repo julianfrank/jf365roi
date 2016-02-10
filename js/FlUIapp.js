@@ -13,6 +13,10 @@ var modelDataItem = {
         'Property': { 'min': 0, 'max': 9999, 'step': 1, 'value': 100 },
         'ConnectedIDs': ['ir_AvgCallsPM', 'in_AvgCallsPM']
     },
+    'AvgCallDurationPC': {
+        'Property': { 'min': 0, 'max': 99, 'step': 0.1, 'value': 5 },
+        'ConnectedIDs': ['ir_AvgCallDurationPC', 'in_AvgCallDurationPC']
+    },
     'InboundCallsP': {
         'Property': { 'min': 0, 'max': 100, 'step': 1, 'value': 66 },
         'ConnectedIDs': ['ir_InboundCallsP', 'in_InboundCallsP']
@@ -108,9 +112,10 @@ var modelDataGroups = {
 //This is the main equivalent
 function init_document() {
 
-    myApp = new FlUI(modelDataItem, modelDataGroups)
+    myApp=new FlUI(modelDataItem, modelDataGroups)
 
-    //log(myApp.getAllMDI())
+    log(myApp.getDataModel())
+    log(myApp.getDataItemValue('AzureExpressRouteCPM'))
     //log(myApp.getAllMDG())
 
 }
