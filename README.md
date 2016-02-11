@@ -6,7 +6,8 @@ You can checkout the latest version in the links below and I would appreciate an
 
 | Date   	| Status   	| Links   	|
 |:-:	|:-:	|---	|
-| **07/Feb/2016**  	| FlUI library in decent shape...S4Broi app with FlUI available in the s4broi branch  	| [FlUI based App](https://jfs4broi.herokuapp.com/FlUI)  	|
+| **11/Feb/2016**  	| Ugly duckling Version ...All Logic Built...  	| [FlUI based App](https://jfs4broi.herokuapp.com/s4bpstn)  	|
+| *07/Feb/2016*  	| FlUI library in decent shape...S4Broi app with FlUI available in the s4broi branch  	| [FlUI based App](https://jfs4broi.herokuapp.com/FlUI)  	|
 |*27/Jan/2016*   	| Focusing on Skype4BPSTN Right Now  	| [Ugly Duckling Version](https://jfs4broi.herokuapp.com)  	|
 
       
