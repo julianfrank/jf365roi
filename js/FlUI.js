@@ -29,8 +29,7 @@ if ((typeof log === 'undefined') && (DEBUGMODE)) {
                 'active': [Array of Related DataItems whose Sum needs to be max of the DataItem with max 'sumValue'],
                 'buffer': Buffer DataItem used to compensate active DataItems sum being lower than needed 'maxSumValue'
             }
-        }
-*/
+        }*/
 function FlUI(modelDataItemValue, modelDataGroupsValue) {
     var modelDataItemStore = {},
         modelDataGroupsStore = {},
@@ -39,17 +38,30 @@ function FlUI(modelDataItemValue, modelDataGroupsValue) {
         modelDataItemIndex = []
 
     //Initiate Initialization of the DataItem and DataGroup Stores
-    setAllMDI(modelDataItemValue)
-    setAllMDG(modelDataGroupsValue)
+    if (typeof modelDataItemValue != 'undefined') setAllMDI(modelDataItemValue)
+    if (typeof modelDataGroupsValue != 'undefined') setAllMDG(modelDataGroupsValue)
     updateAllDItoUI()
 
     //All UI changes if registered Elements will land here
     function UIChange(event) {
-        var changedElementId = event.currentTarget.id                                   //Element that Changed
-        var changedDataItem = modelElementIndex[changedElementId]['sourceDataItem']     //Related DataItem that changed 
-        var newValue = document.getElementById(changedElementId).value                  //Retreive new Value
-        updateDataItem(changedDataItem, 'value', newValue)                              // Update new Value to MDI Store and sync with UI
-        updateGroupItem(changedDataItem, newValue)
+        var changedElementId = event.currentTarget.id//Element that Changed                                   
+        var changedDataItem = modelElementIndex[changedElementId]['sourceDataItem']//Related DataItem that changed 
+        var newValue = document.getElementById(changedElementId).value//Retreive new Value
+        updateDataItem(changedDataItem, 'value', newValue)// Update new Value to MDI Store and sync with UI
+        updateGroupItem(changedDataItem, newValue)//Run all the Group Level Logics
+        if (typeof FlUILogicFunction == 'function') FlUILogicFunction()//Run the Attached Logic Function (If attached)
+    }
+
+    //Allows Attachment of Logic Functions That use the Data in this object
+    var FlUILogicFunction
+    this.attachLogicFunction = function (logicfunction) {
+        if (typeof logicfunction != 'function') {
+            log('FlUI :\t Attach Failed - Attached object is of type ' + (typeof logicfunction))
+        } else {
+            FlUILogicFunction = logicfunction
+            FlUILogicFunction()
+            log('FlUI Logic Function Attached ' + (typeof FlUILogicFunction))
+        }
     }
 
     //Update DataItem function that updates all the related UI Elements when data Item is updated
@@ -153,7 +165,7 @@ function FlUI(modelDataItemValue, modelDataGroupsValue) {
 
     //Validate and correct newValue before updating the store
     function validateDataItemChange(di, property, newValue) {
-        //[Todo]This needs to be updated to be robust...Currently problems in input if min is >0
+        //[Todo]This needs to be updated to be robust...Currently problems in input if min is not 0
         if (modelDataItemStore[di]['Property']['min']) {
             if (newValue < modelDataItemStore[di]['Property']['min']) {
                 newValue = modelDataItemStore[di]['Property']['min']
@@ -285,7 +297,7 @@ function FlUI(modelDataItemValue, modelDataGroupsValue) {
         }
     }
 
-    log('FlUI Loaded')
+    log('FlUI 0.3.0 Loaded')
     log(this)
 
 }

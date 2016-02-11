@@ -1,12 +1,8 @@
 'use strict'
 
-var DEBUGMODE = true// turn Debugger on...When this is false log will not output anything
-
-var myApp
-
 var modelDataItem = {
     'PhoneCount': {
-        'Property': { 'min': 0, 'max': 444444, 'step': 1, 'value': 10000 },
+        'Property': { 'min': 0, 'max': 999999, 'step': 1, 'value': 10 },
         'ConnectedIDs': ['ir_PhoneCount', 'in_PhoneCount']
     },
     'AvgCallsPM': {
@@ -14,31 +10,31 @@ var modelDataItem = {
         'ConnectedIDs': ['ir_AvgCallsPM', 'in_AvgCallsPM']
     },
     'AvgCallDurationPC': {
-        'Property': { 'min': 0, 'max': 99, 'step': 0.1, 'value': 5 },
+        'Property': { 'min': 0, 'max': 99, 'step': 0.1, 'value': 10 },
         'ConnectedIDs': ['ir_AvgCallDurationPC', 'in_AvgCallDurationPC']
     },
     'InboundCallsP': {
-        'Property': { 'min': 0, 'max': 100, 'step': 1, 'value': 66 },
+        'Property': { 'min': 0, 'max': 100, 'step': 1, 'value': 75 },
         'ConnectedIDs': ['ir_InboundCallsP', 'in_InboundCallsP']
     },
     'OutboundCallsP': {
-        'Property': { 'min': 0, 'max': 100, 'step': 1, 'value': 33 },
+        'Property': { 'min': 0, 'max': 100, 'step': 1, 'value': 25 },
         'ConnectedIDs': ['m_OutboundCallsP']
     },
     'LocalCallsP': {
-        'Property': { 'min': 0, 'max': 100, 'step': 1, 'value': 66 },
+        'Property': { 'min': 0, 'max': 100, 'step': 1, 'value': 70 },
         'ConnectedIDs': ['ir_LocalCallsP', 'in_LocalCallsP']
     },
     'IntCallsP': {
-        'Property': { 'min': 0, 'max': 100, 'step': 1, 'value': 33 },
+        'Property': { 'min': 0, 'max': 100, 'step': 1, 'value': 30 },
         'ConnectedIDs': ['m_IntCallsP']
     },
     'PSTNMRC': {
-        'Property': { 'min': 9, 'max': 9999999, 'step': 1, 'value': 99999 },
+        'Property': { 'min': 9, 'max': 9999999, 'step': 1, 'value': 10000 },
         'ConnectedIDs': ['ir_PSTNMRC', 'in_PSTNMRC']
     },
     'LocalInboundCPM': {
-        'Property': { 'min': 0, 'max': 99, 'step': 0.01, 'value': 0 },
+        'Property': { 'min': 0, 'max': 99, 'step': 0.01, 'value': 1 },
         'ConnectedIDs': ['ir_LocalInboundCPM', 'in_LocalInboundCPM']
     },
     'LocalInboundFMPU': {
@@ -46,15 +42,15 @@ var modelDataItem = {
         'ConnectedIDs': ['ir_LocalInboundFMPU', 'in_LocalInboundFMPU']
     },
     'LocalOutboundCPM': {
-        'Property': { 'min': 0, 'max': 99, 'step': 0.01, 'value': 0.01 },
+        'Property': { 'min': 0, 'max': 99, 'step': 0.01, 'value': 1 },
         'ConnectedIDs': ['ir_LocalOutboundCPM', 'in_LocalOutboundCPM']
     },
     'LocalOutboundFMPU': {
-        'Property': { 'min': 0, 'max': 9999, 'step': 1, 'value': 100 },
+        'Property': { 'min': 0, 'max': 9999, 'step': 1, 'value': 0 },
         'ConnectedIDs': ['ir_LocalOutboundFMPU', 'in_LocalOutboundFMPU']
     },
     'IntInboundCPM': {
-        'Property': { 'min': 0, 'max': 99, 'step': 0.01, 'value': 0 },
+        'Property': { 'min': 0, 'max': 99, 'step': 0.01, 'value': 1 },
         'ConnectedIDs': ['ir_IntInboundCPM', 'in_IntInboundCPM']
     },
     'IntInboundFMPU': {
@@ -62,24 +58,24 @@ var modelDataItem = {
         'ConnectedIDs': ['ir_IntInboundFMPU', 'in_IntInboundFMPU']
     },
     'IntOutboundCPM': {
-        'Property': { 'min': 0, 'max': 99, 'step': 0.01, 'value': 0.1 },
+        'Property': { 'min': 0, 'max': 99, 'step': 0.01, 'value': 1 },
         'ConnectedIDs': ['ir_IntOutboundCPM', 'in_IntOutboundCPM']
     },
     'IntOutboundFMPU': {
-        'Property': { 'min': 0, 'max': 9999, 'step': 1, 'value': 100 },
+        'Property': { 'min': 0, 'max': 9999, 'step': 1, 'value': 0 },
         'ConnectedIDs': ['ir_IntOutboundFMPU', 'in_IntOutboundFMPU']
     },
 
     'LocalCallingPackageP': {
-        'Property': { 'min': 0, 'max': 100, 'step': 1, 'value': 63 },
+        'Property': { 'min': 0, 'max': 100, 'step': 1, 'value': 50 },
         'ConnectedIDs': ['ir_LocalCallingPackageP', 'in_LocalCallingPackageP']
     },
     'IntCallingPackageP': {
-        'Property': { 'min': 0, 'max': 100, 'step': 1, 'value': 36 },
+        'Property': { 'min': 0, 'max': 100, 'step': 1, 'value': 30 },
         'ConnectedIDs': ['ir_IntCallingPackageP', 'in_IntCallingPackageP']
     },
     'NoCallingPackageP': {
-        'Property': { 'min': 0, 'max': 100, 'step': 1, 'value': 1 },
+        'Property': { 'min': 0, 'max': 100, 'step': 1, 'value': 20 },
         'ConnectedIDs': ['m_NoCallingPackageP']
     },
     'LocalCallingPackageDiscountP': {
@@ -95,7 +91,7 @@ var modelDataItem = {
         'ConnectedIDs': ['ir_MinutesPerUserPackage', 'in_MinutesPerUserPackage']
     },
     'AzureExpressRouteCPM': {
-        'Property': { 'min': 0, 'max': 99999, 'step': 1, 'value': 9999 },
+        'Property': { 'min': 0, 'max': 99999, 'step': 1, 'value': 10000 },
         'ConnectedIDs': ['ir_AzureExpressRouteCPM', 'in_AzureExpressRouteCPM']
     },
 }
@@ -107,15 +103,4 @@ var modelDataGroups = {
         'active': ['LocalCallingPackageP', 'IntCallingPackageP'],
         'buffer': 'NoCallingPackageP'
     }
-}
-
-//This is the main equivalent
-function init_document() {
-
-    myApp=new FlUI(modelDataItem, modelDataGroups)
-
-    log(myApp.getDataModel())
-    log(myApp.getDataItemValue('AzureExpressRouteCPM'))
-    //log(myApp.getAllMDG())
-
 }
