@@ -1,23 +1,33 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Office365 ROI Calculator - Skype for Business PSTN Module</title>
+    <title> Office365 ROI Calculator - Skype for Business PSTN Module</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+
     <link rel="shortcut icon" type="image/x-ico" href="/public/favicon.ico" />
+    <link rel="stylesheet" href="/css/s4bpstn.css">
+
     <script src="/js/log.js"></script>
     <script src="/js/FlUI.js"></script>
     <script src="/js/s4bpstnapp.js"></script>
     <script src="/js/s4bpstndef.js"></script>
+
 </head>
 
 <body onload="init_document()">
-    <h1>Office365 ROI Calculator</h1>
-    <h2>Skype for Business PSTN Module v0.4.0</h2>
-    <h3>Last Updated on 11 Feb 2016</h3>
-    <br>
-    <div id="Present">
-        <h2>Present</h2>
-        <div id="PSTNCallsPerMonth">
-            <h3>PSTN Calls Per Month</h3>
+    <header>
+        <h1>Office365 ROI Calculator</h1>
+    </header>
+    <nav>
+        Skype for Business PSTN Module v0.5.0 - Last Updated on 12 Feb 2016
+    </nav>
+    <section id="Present">
+        <header>
+            Present Inventory and Costs
+        </header>
+        <article id="PSTNCallsPerMonth">
+            <header>PSTN Calls Per Month</header>
             <div id="PhoneCount">
                 <label>Number of Phones</label>
                 <input id="ir_PhoneCount" type="range">
@@ -35,7 +45,7 @@
             </div>
             <div>
                 <label>Call Minutes Per Month</label>
-                <output id="o_CallMinutesPerMonth">o_CallMinutesPerMonth</output>
+                <input disabled id="o_CallMinutesPerMonth"></input>
             </div>
             <div id="InboundCallsP">
                 <label>Average Inbound Calls %</label>
@@ -53,7 +63,7 @@
             </div>
             <div>
                 <label>Local Call Minutes Per Month</label>
-                <output id="o_LocalCallMinutesPerMonth">o_LocalCallMinutesPerMonth</output>
+                <input disabled id="o_LocalCallMinutesPerMonth"></input>
             </div>
             <div id="IntCallsP">
                 <label>Average International Calls %</label>
@@ -61,11 +71,11 @@
             </div>
             <div>
                 <label>International Call Minutes Per Month</label>
-                <output id="o_IntCallMinutesPerMonth">o_IntCallMinutesPerMonth</output>
+                <input disabled id="o_IntCallMinutesPerMonth"></input>
             </div>
-        </div>
-        <div id="CurrentCallCosts">
-            <h3>Current Call Costs (Across All Users)</h3>
+        </article>
+        <article id="CurrentCallCosts">
+            <header>Current Call Costs (Across All Users)</header>
             <div id="PSTNMRC">
                 <label>PSTN Monthly Recurring Charges Total Across All Circuits (Analog/Ex/Tx/SIP) $</label>
                 <input id="ir_PSTNMRC" type="range">
@@ -83,7 +93,7 @@
             </div>
             <div>
                 <label>Spend for Local Inbound Per Month $</label>
-                <output id="o_SpendLocalInPerMonth">o_SpendLocalInPerMonth</output>
+                <input disabled id="o_SpendLocalInPerMonth"></input>
             </div>
             <div id="LocalOutboundCPM">
                 <label>Local Outbound Cost Per Minute $</label>
@@ -97,7 +107,7 @@
             </div>
             <div>
                 <label>Spend for Local Outbound Per Month $</label>
-                <output id="o_SpendLocalOutPerMonth">o_SpendLocalOutPerMonth</output>
+                <input disabled id="o_SpendLocalOutPerMonth"></input>
             </div>
             <div id="IntInboundCPM">
                 <label>International Inbound Cost Per Minute $</label>
@@ -111,7 +121,7 @@
             </div>
             <div>
                 <label>Spend for International Inbound Per Month $</label>
-                <output id="o_SpendIntInPerMonth">o_SpendIntInPerMonth</output>
+                <input disabled id="o_SpendIntInPerMonth"></input>
             </div>
             <div id="IntOutboundCPM">
                 <label>International Outbound Cost Per Minute $</label>
@@ -125,127 +135,126 @@
             </div>
             <div>
                 <label>Spend for International Outbound Per Month $</label>
-                <output id="o_SpendIntOutPerMonth">o_SpendIntOutPerMonth</output>
+                <input disabled id="o_SpendIntOutPerMonth"></input>
             </div>
-            <div>
-                <label>Total PSTN Spend Per Month Per Month $</label>
-                <b><mark><output id="o_SpendPSTNTotal">o_SpendPSTNTotal</output></mark></b>
-            </div>
-        </div>
-        <div id="Skype4BInputs">
-            <h3>Skype For Business Online Related Inputs</h3>
+        </article>
+    </section>
+    <aside>
+        <label>Total PSTN Spend Per Month $</label>
+        <b><input disabled  id="o_SpendPSTNTotal"></input></b>
+    </aside>
+    <section id="Skype4BInputs">
+        <header>Skype For Business Online Related Inputs</header>
+        <article id="Skype4BListPrice">
+            <header>Skype4B Product specific Costs</header>
             <div>
                 <label>Skype for Business E5 Local Calling Package Per User Per Month (List Price) $</label>
-                <mark>
-                    <output id="o_SpendLocalCallingPackageLP">o_SpendLocalCallingPackageLP</output>
-                </mark>
+                <input disabled id="o_SpendLocalCallingPackageLP"></input>
             </div>
             <div>
                 <label>Skype for Business E5 International Calling Package Per User Per Month (List Price) $</label>
-                <mark>
-                    <output id="o_SpendIntCallingPackageLP">o_SpendIntCallingPackageLP</output>
-                </mark>
+                <input disabled id="o_SpendIntCallingPackageLP"></input>
             </div>
-            <div id="CallingPackageDist">
-                <h4>Calling Package Distribution</h4>
-                <div id="LocalCallingPackageP">
-                    <label>Users with Local Calling Package %</label>
-                    <input id="ir_LocalCallingPackageP" type="range">
-                    <input id="in_LocalCallingPackageP" type="number">
-                </div>
-                <div>
-                    <label>Users with Local Calling Package</label>
-                    <output id="o_LocalCallingPackageUsers">o_LocalCallingPackageUsers</output>
-                </div>
-                <div id="IntCallingPackageP">
-                    <label>Users with International Calling Package %</label>
-                    <input id="ir_IntCallingPackageP" type="range">
-                    <input id="in_IntCallingPackageP" type="number">
-                </div>
-                <div>
-                    <label>Users with International Calling Package</label>
-                    <output id="o_IntCallingPackageUsers">o_IntCallingPackageUsers</output>
-                </div>
-                <div id="NoCallingPackageP">
-                    <label>Users with No Calling Package %</label>
-                    <meter id="m_NoCallingPackageP"></meter>
-                </div>
-                <div>
-                    <label>Users with No Calling Package</label>
-                    <output id="o_NoCallingPackageUsers">o_NoCallingPackageUsers</output>
-                </div>
+            <div>
+                <label>Azure Express Route Cost Per Month</label>
+                <input id="ir_AzureExpressRouteCPM" type="range">
+                <input id="in_AzureExpressRouteCPM" type="number">
             </div>
-            <div id="CallingPackageDiscount">
-                <h4>Calling Package Discount (If Available)</h4>
-                <div id="LocalCallingPackageDiscountP">
-                    <label>Local Calling Package Discount %</label>
-                    <input id="ir_LocalCallingPackageDiscountP" type="range">
-                    <input id="in_LocalCallingPackageDiscountP" type="number">
-                </div>
-                <div>
-                    <label>Skype for Business E5 Local Calling Package Per User Per Month (Discounted Price) $</label>
-                    <output id="o_SpendLocalCallingPackageDP">o_SpendLocalCallingPackageDP</output>
-                </div>
-                <div>
-                    <label>Estimate Spend on Skype for Business E5 Local Calling Package Per Month $</label>
-                    <output id="o_SpendLocalCallingPackageUsers">o_SpendLocalCallingPackageUsers</output>
-                </div>
-                <div id="IntCallingPackageDiscountP">
-                    <label>International Calling Package Discount %</label>
-                    <input id="ir_IntCallingPackageDiscountP" type="range">
-                    <input id="in_IntCallingPackageDiscountP" type="number">
-                </div>
-                <div>
-                    <label>Skype for Business E5 International Calling Package Per User Per Month (Discounted Price) $</label>
-                    <output id="o_SpendIntCallingPackageDP">o_SpendIntCallingPackageDP</output>
-                </div>
-                <div>
-                    <label>Estimate Spend on Skype for Business E5 International Calling Package Per Month $</label>
-                    <output id="o_SpendIntCallingPackageUsers">o_SpendIntCallingPackageUsers</output>
-                </div>
+        </article>
+        <article id="CallingPackageDist">
+            <header>Calling Package Distribution</header>
+            <div id="LocalCallingPackageP">
+                <label>Users with Local Calling Package %</label>
+                <input id="ir_LocalCallingPackageP" type="range">
+                <input id="in_LocalCallingPackageP" type="number">
             </div>
-            <div id="Other Details">
-                <h4>Other Details</h4>
-                <div id="MinutesPerUserPackage">
-                    <label>Pooled Minutes Per User Package</label>
-                    <input id="ir_MinutesPerUserPackage" type="range">
-                    <input id="in_MinutesPerUserPackage" type="number">
-                </div>
-                <div>
-                    <label>Pooled Local Minutes Available</label>
-                    <output id="o_PooledLocalMins">o_PooledLocalMins</output>
-                </div>
-                <div>
-                    <label>Excess Local Calling Packages Needed </label>
-                    <output id="o_ExcessLocalPkg">None</output>
-                </div>
-                <div>
-                    <label>Pooled International Minutes Available</label>
-                    <output id="o_PooledIntMins">o_PooledIntMins</output>
-                </div>
-                <div>
-                    <label>Excess International Calling Packages Needed </label>
-                    <output id="o_ExcessIntPkg">None</output>
-                </div>
+            <div>
+                <label>Users with Local Calling Package</label>
+                <input disabled id="o_LocalCallingPackageUsers"></input>
             </div>
-        </div>
-        <div id="AzureExpressRouteCPM">
-            <label>Azure Express Route Cost Per Month</label>
-            <input id="ir_AzureExpressRouteCPM" type="range">
-            <input id="in_AzureExpressRouteCPM" type="number">
-        </div>
-        <div>
-            <label>Skype for Business E5 Total Investment Needed $</label>
-            <mark>
-                <output id="o_SpendTotalNeeded">o_SpendTotalNeeded</output>
-            </mark>
-        </div>
-    </div>
-    <div>
-        <h2>Recomendation</h2>
-        <mark>
-            <output id="o_Recomendation">o_Recomendation</output>
-        </mark>
+            <div id="IntCallingPackageP">
+                <label>Users with International Calling Package %</label>
+                <input id="ir_IntCallingPackageP" type="range">
+                <input id="in_IntCallingPackageP" type="number">
+            </div>
+            <div>
+                <label>Users with International Calling Package</label>
+                <input disabled id="o_IntCallingPackageUsers"></input>
+            </div>
+            <div id="NoCallingPackageP">
+                <label>Users with No Calling Package %</label>
+                <meter id="m_NoCallingPackageP"></meter>
+            </div>
+            <div>
+                <label>Users with No Calling Package</label>
+                <input disabled id="o_NoCallingPackageUsers"></input>
+            </div>
+        </article>
+        <article id="CallingPackageDiscount">
+            <header>Calling Package Discount (If Available)</header>
+            <div id="LocalCallingPackageDiscountP">
+                <label>Local Calling Package Discount %</label>
+                <input id="ir_LocalCallingPackageDiscountP" type="range">
+                <input id="in_LocalCallingPackageDiscountP" type="number">
+            </div>
+            <div>
+                <label>Skype for Business E5 Local Calling Package Per User Per Month (Discounted Price) $</label>
+                <input disabled id="o_SpendLocalCallingPackageDP"></input>
+            </div>
+            <div>
+                <label>Estimate Spend on Skype for Business E5 Local Calling Package Per Month $</label>
+                <input disabled id="o_SpendLocalCallingPackageUsers"></input>
+            </div>
+            <div id="IntCallingPackageDiscountP">
+                <label>International Calling Package Discount %</label>
+                <input id="ir_IntCallingPackageDiscountP" type="range">
+                <input id="in_IntCallingPackageDiscountP" type="number">
+            </div>
+            <div>
+                <label>Skype for Business E5 International Calling Package Per User Per Month (Discounted Price) $</label>
+                <input disabled id="o_SpendIntCallingPackageDP"></input>
+            </div>
+            <div>
+                <label>Estimate Spend on Skype for Business E5 International Calling Package Per Month $</label>
+                <input disabled id="o_SpendIntCallingPackageUsers"></input>
+            </div>
+        </article>
+        <article id="Other Details">
+            <header>Other Details</header>
+            <div id="MinutesPerUserPackage">
+                <label>Pooled Minutes Per User Package</label>
+                <input id="ir_MinutesPerUserPackage" type="range">
+                <input id="in_MinutesPerUserPackage" type="number">
+            </div>
+            <div>
+                <label>Pooled Local Minutes Available</label>
+                <input disabled id="o_PooledLocalMins"></input>
+            </div>
+            <div>
+                <label>Excess Local Calling Packages Needed </label>
+                <input disabled id="o_ExcessLocalPkg" value="None"></input>
+            </div>
+            <div>
+                <label>Pooled International Minutes Available</label>
+                <input disabled id="o_PooledIntMins"></input>
+            </div>
+            <div>
+                <label>Excess International Calling Packages Needed </label>
+                <input disabled id="o_ExcessIntPkg" value="None"></input>
+            </div>
+        </article>
+    </section>
+    <aside>
+        <label>Skype for Business E5 - PSTN Calling Packs Total Investment Needed $</label>
+        <input disabled id="o_SpendTotalNeeded"></input>
+        <sub>*This does not account for CloudPBX part of the Solution</sub>
+    </aside>
 
-    </div>
+    <aside>
+        <label>Recomendation</label>
+        <input disabled id="o_Recomendation"></input>
+    </aside>
 </body>
+<footer>
+    Posted by: Julian Frank         Contact information: <a href="mailto:julianknarf@outlook.com">julianknarf@outlook.com</a>.
+</footer>

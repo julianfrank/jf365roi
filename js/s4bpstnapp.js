@@ -120,7 +120,7 @@ function computeResult() {
     if (savings > 0) {
         document.getElementById('o_Recomendation').value = 'Recomended - You will save $' + savings + ' Per Month'
     } else {
-        document.getElementById('o_Recomendation').value = 'Not Recomended - You will lose $' + savings + ' Per Month'
+        document.getElementById('o_Recomendation').value = 'Not Recomended - You will lose $' + (-savings) + ' Per Month'
     }
 
 }
