@@ -39,7 +39,7 @@ app.all('/favicon.ico', function (req, res) {// Need this to load test using loa
 
 app.all('/', function (req, res) {// Right now will use this to test the s4b.html
     res.contentType('text/html')
-    res.render('s4b')
+    res.render('s4bpstn')
 })
 
 app.all('/lab1', function (req, res) {// Right now will use this to test the s4b.html
