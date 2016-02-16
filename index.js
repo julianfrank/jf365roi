@@ -5,12 +5,14 @@ var express = require('express')
 var bodyParser = require('body-parser') //Required to read the body
 //var session = require('express-session') //Required to handle sessions
 //var cookieparser = require('cookie-parser') //Sesisons inturn need cookie parsing
+var MongoClient = require('mongodb').MongoClient;
 
 //Add-on Modules
 var helpers = require('./mylibs/helpers')
 
 //Initialization
 var port = process.env.PORT || 80
+var mongoLabURL = process.env.mongoLabURL || require('./secrets.js').secret.mongoDBConnectionString.toString()
 var log = helpers.log
  
 //Express Application Initialization
@@ -51,8 +53,13 @@ app.all('/s4bpstn', function (req, res) {// Right now will use this to test the 
     res.contentType('text/html')
     res.render('s4bpstn')
 })
-app.listen(port, function () {
-    log(helpers.readPackageJSON(__dirname,"name") + " " +
-        helpers.readPackageJSON(__dirname,"version") +
-        "\tStarted & Listening on port\t: "+ port)
-});
+
+MongoClient.connect(mongoLabURL, function (err, db) {
+    app.listen(port, function () {
+        log(helpers.readPackageJSON(__dirname, "name") + " " +
+            helpers.readPackageJSON(__dirname, "version") +
+            "\tStarted & Listening on port\t: " + port)
+    })
+    db.close
+})
+
