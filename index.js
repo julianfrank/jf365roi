@@ -12,7 +12,7 @@ var helpers = require('./mylibs/helpers')
 
 //Initialization
 var port = process.env.PORT || 80
-var mongoLabURL = process.env.mongoLabURL || require('./secrets.js').secret.mongoDBConnectionString.toString()
+var mongoLabURL = process.env.mongoLabURL //|| require('./secrets.js').secret.mongoDBConnectionString.toString()
 var log = helpers.log
  
 //Express Application Initialization
@@ -29,37 +29,41 @@ app.use('/', express.static('public'));
 app.use('/js', express.static('js'));
 app.use('/css', express.static('css'));
 
+app.all('*', function (req, res, next) {
+    console.log('ips:' + req.ips + '\tprotocol:' + req.protocol + '\txhr:' + req.xhr)
+    return next()
+})
+
 app.all('/*.html', function (req, res) {// Need this to load test using loader.io
     res.contentType('text/html')
     res.render(req.params[0])
 })
 
-app.all('/favicon.ico', function (req, res) {// Need this to load test using loader.io
+app.all('/favicon.ico', function (req, res) {// Show my Pretty Face ;) on the favicon area
     res.contentType('image/x-icon')
     res.redirect('/public/favicon.ico')
 })
 
-app.all('/', function (req, res) {// Right now will use this to test the s4b.html
+app.all('/', function (req, res) {// Main page
     res.contentType('text/html')
     res.render('s4bpstn')
 })
 
-app.all('/lab1', function (req, res) {// Right now will use this to test the s4b.html
+app.all('/try1', function (req, res) {// Right now will use this to test the try1.html
     res.contentType('text/html')
     res.render('try1')
 })
 
-app.all('/s4bpstn', function (req, res) {// Right now will use this to test the s4b.html
+app.all('/s4bpstn', function (req, res) {// Right now will use this to test the s4bpstn.html
     res.contentType('text/html')
     res.render('s4bpstn')
 })
 
-MongoClient.connect(mongoLabURL, function (err, db) {
-    app.listen(port, function () {
-        log(helpers.readPackageJSON(__dirname, "name") + " " +
-            helpers.readPackageJSON(__dirname, "version") +
-            "\tStarted & Listening on port\t: " + port)
-    })
-    db.close
+//MongoClient.connect(mongoLabURL, function (err, db) {
+app.listen(port, function () {
+    log(helpers.readPackageJSON(__dirname, "name") + " " +
+        helpers.readPackageJSON(__dirname, "version") +
+        "\tStarted & Listening on port\t: " + port)
 })
-
+//    db.close
+//})

@@ -1,36 +1,24 @@
 'use strict'
 
-var myDoc = new FlUI()
+var DEBUGMODE = true
+var s4bpstnpage = new Fluid('s4bpstn')
 
 function init_document() {
-    myDoc.setDataModel({
-        'PhoneCount': { 'min': 0, 'max': 100000, 'step': 100, 'value': 66111 },
-        'LocalCallsP': { 'min': 0, 'max': 100, 'step': 1, 'value': 77 },
-        'IntCallsP': { 'min': 0, 'max': 100, 'step': 1, 'value': 33 },
-        'LocalCallingPackageP': { 'min': 0, 'max': 100, 'step': 1, 'value': 63 },
-        'IntCallingPackageP': { 'min': 0, 'max': 100, 'step': 1, 'value': 36 },
-        'NoCallingPackageP': { 'min': 0, 'max': 100, 'step': 1, 'value': 1 }
-    })
-    //alert(JSON.stringify(myDoc.getDataModel()))
-
-    myDoc.setCopyMap({
-        'PhoneCount': ['ir_PhoneCount', 'in_PhoneCount'],
-        'LocalCallsP': ['ir_LocalCallsP', 'in_LocalCallsP'],
-        'IntCallsP': ['m_IntCallsP'],
-        'LocalCallingPackageP': ['ir_LocalCallingPackageP', 'in_LocalCallingPackageP'],
-        'IntCallingPackageP': ['ir_IntCallingPackageP', 'in_IntCallingPackageP'],
-        'NoCallingPackageP': ['m_NoCallingPackageP']
-    })
-    //alert(JSON.stringify(myDoc.getCopyMap()))
-
-    myDoc.setSumMap({
-        'CallsP': { 'active': ['LocalCallsP', 'IntCallsP'] },
-        'CallingPackage': {
-            'active': ['LocalCallingPackageP', 'IntCallingPackageP'],
-            'passive': ['NoCallingPackageP']
-        }
-    })
-    //alert(JSON.stringify(myDoc.getSumMap()))
+    console.info(s4bpstnpage.info())
+    s4bpstnpage.addDataItem('DI1', 1)
+    s4bpstnpage.setDIValue('DI3', 'This should not work')
+    console.info(s4bpstnpage.getDIValue('DI1'))
+    console.info(s4bpstnpage.getDIProperty('DI1','min'))//Should not work
+    s4bpstnpage.setDIProperty('DI1', { min: 0 })
+    console.info(s4bpstnpage.getDIProperty('DI1','min'))//Should work
     
-    myDoc.attachUI2Map()
+    s4bpstnpage.addDataItem('DI2', '2')
+    s4bpstnpage.setDIProperty('DI2', { min: 0, max: 100, len: 5 })
+    console.info(s4bpstnpage.getDIProperty('DI2'))
+    
+    s4bpstnpage.addDataItem('DI3', { 1233: 90909 })//This value should not get loaded
+    s4bpstnpage.setDIProperty('DI3', "This value should not get loaded")//This value should not get loaded
+    s4bpstnpage.setDIProperty('DI3', 1234)//This value should not get loaded
+    s4bpstnpage.setDIValue('DI3', 'This should work')
+    console.info(s4bpstnpage.getDIStore())
 }
