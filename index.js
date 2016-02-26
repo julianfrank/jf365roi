@@ -1,6 +1,7 @@
 'use strict'
 
 //Key Libraries
+require('newrelic')
 var express = require('express')
 var bodyParser = require('body-parser') //Required to read the body
 //var session = require('express-session') //Required to handle sessions
